@@ -32,3 +32,11 @@ def unarchive_call(call_id):
             else:
                 return f"Call with ID:{call_id} is already unarchived!"
     return f"Call with ID:{call_id} is not exist!"
+
+
+def delete_call(call_id):
+    for call in calls:
+        if call["id"] == call_id:
+            calls.remove(call)
+            return f"Call with ID:{call_id} is deleted!"
+    return f"Call with ID:{call_id} is not exist!"
