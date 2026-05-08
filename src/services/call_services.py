@@ -21,3 +21,14 @@ def archive_call(call_id):
                 call["is_archived"] = True
                 return f"Call with ID:{call_id} has been archived!"
     return f"Call with ID:{call_id} is not exist!"
+
+
+def unarchive_call(call_id):
+    for call in calls:
+        if call["id"] == call_id:
+            if call["is_archived"] is True:
+                call["is_archived"] = False
+                return f"Call with ID:{call_id} has been unarchived!"
+            else:
+                return f"Call with ID:{call_id} is already unarchived!"
+    return f"Call with ID:{call_id} is not exist!"
