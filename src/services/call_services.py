@@ -47,3 +47,22 @@ def filter_calls(call_type):
     call_types = ["answered", "voicemail", "missed"]
     if call_type in call_types:
         return [call for call in calls if call["call_type"] == call_type]
+
+
+def validate_call(call):
+    if call["direction"] not in ("inbound", "outbound"):
+        raise ValueError("Error: A call's direction must be Inbound or Outbound")
+    if call["call_type"] not in ("answered", "voicemail", "missed"):
+        raise ValueError(
+            "Error: A call's call type must be either answered, voicemail or missed"
+        )
+    if type(call["duration"]) is not int:
+        raise ValueError("Error: A call's duration must be integer")
+    if call["from_number"][0] != "+" and call["from_number"][1:].isdigit() is False:
+        raise ValueError(
+            "Error: A call's from_number must have the format of +30 697 12 12 123"
+        )
+    if call["to_number"][0] != "+" and call["to_number"][1:].isdigit() is False:
+        raise ValueError(
+            "Error: A call's to_number must have the format of +30 697 12 12 123"
+        )
