@@ -2,12 +2,16 @@ from src.data.seed_data import calls
 
 
 def get_all_calls():
-    return [call for call in calls if not call["is_archived"]]
+    calls_numbers = [call for call in calls if not call["is_archived"]]
+    for number in calls_numbers:
+        validate_call(number)
+    return calls_numbers
 
 
 def get_call_by_id(call_id):
     for call in calls:
         if call["id"] == call_id:
+            validate_call(call)
             return call
     return None
 
@@ -15,6 +19,7 @@ def get_call_by_id(call_id):
 def archive_call(call_id):
     for call in calls:
         if call["id"] == call_id:
+            validate_call(call)
             if call["is_archived"]:
                 return f"Call with ID:{call_id} is already archived!"
             else:
@@ -26,6 +31,7 @@ def archive_call(call_id):
 def unarchive_call(call_id):
     for call in calls:
         if call["id"] == call_id:
+            validate_call(call)
             if call["is_archived"] is True:
                 call["is_archived"] = False
                 return f"Call with ID:{call_id} has been unarchived!"
@@ -37,6 +43,7 @@ def unarchive_call(call_id):
 def delete_call(call_id):
     for call in calls:
         if call["id"] == call_id:
+            validate_call(call)
             calls.remove(call)
             return f"Call with ID:{call_id} is deleted!"
     return f"Call with ID:{call_id} is not exist!"
