@@ -51,8 +51,7 @@ def delete_call(call_id):
 
 def filter_calls(call_type):
     calls = get_all_calls()
-    call_types = ["answered", "voicemail", "missed"]
-    if call_type in call_types:
+    if call_type in ("answered", "voicemail", "missed"):
         return [call for call in calls if call["call_type"] == call_type]
 
 
