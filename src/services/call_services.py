@@ -72,3 +72,15 @@ def validate_call(call):
         raise ValueError(
             "Error: A call's to_number must have the format of +30 697 12 12 123"
         )
+
+
+def add_note(call_id, note: dict):
+    for call in calls:
+        if call["id"] == call_id:
+            validate_call(call)
+            if "notes" not in call:
+                call.update({"notes": [note]})
+                return call
+            else:
+                call["notes"].append(note)
+                return call

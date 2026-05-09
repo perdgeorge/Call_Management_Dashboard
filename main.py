@@ -5,6 +5,7 @@ from src.services.call_services import (
     unarchive_call,
     delete_call,
     filter_calls,
+    add_note,
 )
 
 print(get_all_calls())
@@ -18,3 +19,14 @@ print(unarchive_call("10"))
 print(delete_call("1"))
 
 print(filter_calls("missed"))
+
+print(
+    add_note(
+        "1",
+        {
+            "id": "note-1",
+            "call_id": "1",
+            "content": "Check my schedule for tomorrow",
+        },
+    )
+)
