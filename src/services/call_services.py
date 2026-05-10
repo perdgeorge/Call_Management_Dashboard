@@ -56,15 +56,15 @@ def delete_call(call_id):
 
 
 def filter_calls(filter):
-    calls = get_all_calls()
+    all_calls = get_all_calls()
     if filter in ("answered", "voicemail", "missed"):
-        return [call for call in calls if call["call_type"] == filter]
+        return [call for call in all_calls if call["call_type"] == filter]
     elif filter in ("outbound", "inbound"):
-        return [call for call in calls if call["direction"] == filter]
+        return [call for call in all_calls if call["direction"] == filter]
     elif filter == "archived":
-        return [call for call in calls if call["is_archived"] is True]
+        return [call for call in all_calls if call["is_archived"] is True]
     elif filter == "not_archived":
-        return [call for call in calls if call["is_archived"] is False]
+        return [call for call in all_calls if call["is_archived"] is False]
 
 
 def validate_call(call):
