@@ -55,15 +55,15 @@ def delete_call(call_id):
     return f"Call with ID:{call_id} is not exist!"
 
 
-def filter_calls(filter):
+def filter_calls(call_filter):
     all_calls = get_all_calls()
-    if filter in ("answered", "voicemail", "missed"):
-        return [call for call in all_calls if call["call_type"] == filter]
-    elif filter in ("outbound", "inbound"):
-        return [call for call in all_calls if call["direction"] == filter]
-    elif filter == "archived":
+    if call_filter in ("answered", "voicemail", "missed"):
+        return [call for call in all_calls if call["call_type"] == call_filter]
+    elif call_filter in ("outbound", "inbound"):
+        return [call for call in all_calls if call["direction"] == call_filter]
+    elif call_filter == "archived":
         return [call for call in all_calls if call["is_archived"] is True]
-    elif filter == "not_archived":
+    elif call_filter == "not_archived":
         return [call for call in all_calls if call["is_archived"] is False]
 
 
