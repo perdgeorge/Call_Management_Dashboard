@@ -6,9 +6,12 @@ from src.services.call_services import (
     delete_call,
     filter_calls,
     add_note,
+    get_non_archived_calls,
 )
 
 print(get_all_calls())
+
+print(get_non_archived_calls())
 
 print(get_call_by_id("3"))
 
@@ -18,7 +21,7 @@ print(unarchive_call("10"))
 
 print(delete_call("1"))
 
-print(filter_calls("missed"))
+print(filter_calls("not_archived"))
 
 print(
     add_note(
