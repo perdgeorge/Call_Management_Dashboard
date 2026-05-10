@@ -2,6 +2,12 @@ from src.data.seed_data import calls
 
 
 def get_all_calls():
+    for call in calls:
+        validate_call(call)
+    return calls
+
+
+def get_non_archived_calls():
     calls_numbers = [call for call in calls if not call["is_archived"]]
     for number in calls_numbers:
         validate_call(number)
