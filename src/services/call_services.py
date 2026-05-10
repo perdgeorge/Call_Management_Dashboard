@@ -76,11 +76,11 @@ def validate_call(call):
         )
     if type(call["duration"]) is not int:
         raise ValueError("Error: A call's duration must be integer")
-    if call["from_number"][0] != "+" and call["from_number"][1:].isdigit() is False:
+    if call["from_number"][0] != "+" or call["from_number"][1:].isdigit() is False:
         raise ValueError(
             "Error: A call's from_number must have the format of +30 697 12 12 123"
         )
-    if call["to_number"][0] != "+" and call["to_number"][1:].isdigit() is False:
+    if call["to_number"][0] != "+" or call["to_number"][1:].isdigit() is False:
         raise ValueError(
             "Error: A call's to_number must have the format of +30 697 12 12 123"
         )
