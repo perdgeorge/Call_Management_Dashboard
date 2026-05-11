@@ -14,14 +14,15 @@ def get_non_archived_calls() -> list[dict]:
     return calls_numbers
 
 
-def get_call_by_id(call_id: str) -> dict | None:
+def get_call_by_id(call_id: str) -> dict | str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
             return call
+    return f"Call with ID:{call_id} is not exist!"
 
 
-def add_note(call_id: str, note: dict) -> dict | None:
+def add_note(call_id: str, note: dict) -> dict | str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -31,6 +32,7 @@ def add_note(call_id: str, note: dict) -> dict | None:
             else:
                 call["notes"].append(note)
                 return call
+    return f"Call with ID:{call_id} is not exist!"
 
 
 def archive_call(call_id: str) -> str:
