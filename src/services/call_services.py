@@ -21,6 +21,18 @@ def get_call_by_id(call_id: str) -> dict | None:
             return call
 
 
+def add_note(call_id: str, note: dict) -> dict | None:
+    for call in calls:
+        if call["id"] == call_id:
+            validate_call(call)
+            if "notes" not in call:
+                call.update({"notes": [note]})
+                return call
+            else:
+                call["notes"].append(note)
+                return call
+
+
 def archive_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
@@ -45,15 +57,6 @@ def unarchive_call(call_id: str) -> str:
     return f"Call with ID:{call_id} is not exist!"
 
 
-def delete_call(call_id: str) -> str:
-    for call in calls:
-        if call["id"] == call_id:
-            validate_call(call)
-            calls.remove(call)
-            return f"Call with ID:{call_id} is deleted!"
-    return f"Call with ID:{call_id} is not exist!"
-
-
 def filter_calls(call_filter: str) -> list[dict] | None:
     all_calls = get_all_calls()
     if call_filter in ("answered", "voicemail", "missed"):
@@ -64,6 +67,15 @@ def filter_calls(call_filter: str) -> list[dict] | None:
         return [call for call in all_calls if call["is_archived"] is True]
     elif call_filter == "not_archived":
         return [call for call in all_calls if call["is_archived"] is False]
+
+
+def delete_call(call_id: str) -> str:
+    for call in calls:
+        if call["id"] == call_id:
+            validate_call(call)
+            calls.remove(call)
+            return f"Call with ID:{call_id} is deleted!"
+    return f"Call with ID:{call_id} is not exist!"
 
 
 def validate_call(call: dict):
@@ -83,15 +95,3 @@ def validate_call(call: dict):
         raise ValueError(
             "Error: A call's to_number must have the format of +30 697 1234567"
         )
-
-
-def add_note(call_id: str, note: dict) -> dict | None:
-    for call in calls:
-        if call["id"] == call_id:
-            validate_call(call)
-            if "notes" not in call:
-                call.update({"notes": [note]})
-                return call
-            else:
-                call["notes"].append(note)
-                return call
