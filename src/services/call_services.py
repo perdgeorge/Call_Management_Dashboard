@@ -1,28 +1,27 @@
 from src.data.seed_data import calls
 
 
-def get_all_calls():
+def get_all_calls() -> list[dict]:
     for call in calls:
         validate_call(call)
     return calls
 
 
-def get_non_archived_calls():
+def get_non_archived_calls() -> list[dict]:
     calls_numbers = [call for call in calls if not call["is_archived"]]
     for number in calls_numbers:
         validate_call(number)
     return calls_numbers
 
 
-def get_call_by_id(call_id):
+def get_call_by_id(call_id: str) -> dict | None:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
             return call
-    return None
 
 
-def archive_call(call_id):
+def archive_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -34,7 +33,7 @@ def archive_call(call_id):
     return f"Call with ID:{call_id} is not exist!"
 
 
-def unarchive_call(call_id):
+def unarchive_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -46,7 +45,7 @@ def unarchive_call(call_id):
     return f"Call with ID:{call_id} is not exist!"
 
 
-def delete_call(call_id):
+def delete_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -55,7 +54,7 @@ def delete_call(call_id):
     return f"Call with ID:{call_id} is not exist!"
 
 
-def filter_calls(call_filter):
+def filter_calls(call_filter: str) -> list[dict] | None:
     all_calls = get_all_calls()
     if call_filter in ("answered", "voicemail", "missed"):
         return [call for call in all_calls if call["call_type"] == call_filter]
@@ -67,7 +66,7 @@ def filter_calls(call_filter):
         return [call for call in all_calls if call["is_archived"] is False]
 
 
-def validate_call(call):
+def validate_call(call: dict):
     if call["direction"] not in ("inbound", "outbound"):
         raise ValueError("Error: A call's direction must be Inbound or Outbound")
     if call["call_type"] not in ("answered", "voicemail", "missed"):
@@ -86,7 +85,7 @@ def validate_call(call):
         )
 
 
-def add_note(call_id, note: dict):
+def add_note(call_id: str, note: dict) -> dict | None:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
