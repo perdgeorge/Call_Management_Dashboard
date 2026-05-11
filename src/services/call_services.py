@@ -79,6 +79,8 @@ def delete_call(call_id: str) -> str:
 
 
 def validate_call(call: dict):
+    caller = call["from_number"].replace(" ", "")
+    receiver = call["to_number"].replace(" ", "")
     if call["direction"] not in ("inbound", "outbound"):
         raise ValueError("Error: A call's direction must be Inbound or Outbound")
     if call["call_type"] not in ("answered", "voicemail", "missed"):
@@ -87,11 +89,11 @@ def validate_call(call: dict):
         )
     if type(call["duration"]) is not int:
         raise ValueError("Error: A call's duration must be integer")
-    if call["from_number"][0] != "+" or call["from_number"][1:].isdigit() is False:
+    if caller[0] != "+" or not caller[1:].isdigit():
         raise ValueError(
             "Error: A call's from_number must have the format of +30 697 1234567"
         )
-    if call["to_number"][0] != "+" or call["to_number"][1:].isdigit() is False:
+    if receiver[0] != "+" or not receiver[1:].isdigit():
         raise ValueError(
             "Error: A call's to_number must have the format of +30 697 1234567"
         )
