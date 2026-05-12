@@ -69,6 +69,8 @@ def filter_calls(call_filter: str) -> list[dict] | None:
         return [call for call in all_calls if call["is_archived"] is True]
     elif call_filter == "not_archived":
         return [call for call in all_calls if call["is_archived"] is False]
+    else:
+        return "Error: Invalid filter! Filter must be either answered, voicemail, missed, outbound, inbound, archived or not_archived"
 
 
 def delete_call(call_id: str) -> str:
