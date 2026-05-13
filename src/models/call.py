@@ -1,4 +1,5 @@
 from datetime import datetime
+from src.core.enums import DirectionCall, CallType
 
 
 class Note:
@@ -9,10 +10,10 @@ class Note:
 
 class Call:
     id: int
-    direction: str
+    direction: DirectionCall
     from_number: str
     to_number: str
-    call_type: str
+    call_type: CallType
     duration: int
     is_archived: bool
     created_at: datetime
