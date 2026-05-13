@@ -1,13 +1,16 @@
+from dataclasses import dataclass, field
 from datetime import datetime
 from src.core.enums import DirectionCall, CallType
 
 
+@dataclass
 class Note:
     id: str
     call_id: int
     content: str
 
 
+@dataclass
 class Call:
     id: int
     direction: DirectionCall
@@ -17,4 +20,4 @@ class Call:
     duration: int
     is_archived: bool
     created_at: datetime
-    notes: list[Note]
+    notes: list[Note] = field(default_factory=list)
