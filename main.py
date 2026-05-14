@@ -38,25 +38,11 @@ async def archive(call_id: str):
     return archive_call(call_id)
 
 
-@app.patch("/Unarchive_call/{call_id}")
+@app.patch("/Unarchive_Call/{call_id}")
 async def unarchive(call_id: str):
     return unarchive_call(call_id)
 
 
-@app.delete("/{call_id}")
+@app.delete("/Delete_Call/{call_id}")
 async def delete(call_id: str):
     return delete_call(call_id)
-
-
-# print(
-#     add_note(
-#         "1",
-#         {
-#             "id": "note-1",
-#             "call_id": "1",
-#             "content": "Check my schedule for tomorrow",
-#         },
-#     )
-# )
-
-# print(filter_calls("not_archived"))
