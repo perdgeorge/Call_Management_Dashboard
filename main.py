@@ -28,6 +28,11 @@ async def call_by_id(call_id: str):
     return get_call_by_id(call_id)
 
 
+@app.patch("/Archive_Call/{call_id}")
+async def archive(call_id: str):
+    return archive_call(call_id)
+
+
 # print(
 #     add_note(
 #         "1",
