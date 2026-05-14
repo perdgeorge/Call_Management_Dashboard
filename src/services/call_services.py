@@ -15,7 +15,7 @@ def get_non_archived_calls() -> list[Call]:
     return calls_numbers
 
 
-def get_call_by_id(call_id: int) -> Call | str:
+def get_call_by_id(call_id: str) -> Call | str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -23,7 +23,7 @@ def get_call_by_id(call_id: int) -> Call | str:
     return f"Call with ID:{call_id} is not exist!"
 
 
-def add_note(call_id: int, note: Note) -> Call | str:
+def add_note(call_id: str, note: Note) -> Call | str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -36,7 +36,7 @@ def add_note(call_id: int, note: Note) -> Call | str:
     return f"Call with ID:{call_id} is not exist!"
 
 
-def archive_call(call_id: int) -> str:
+def archive_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -48,7 +48,7 @@ def archive_call(call_id: int) -> str:
     return f"Call with ID:{call_id} is not exist!"
 
 
-def unarchive_call(call_id: int) -> str:
+def unarchive_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -74,7 +74,7 @@ def filter_calls(call_filter: str) -> list[Call] | str:
         return "Error: Invalid filter! Filter must be either answered, voicemail, missed, outbound, inbound, archived or not_archived"
 
 
-def delete_call(call_id: int) -> str:
+def delete_call(call_id: str) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
