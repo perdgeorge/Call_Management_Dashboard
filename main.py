@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from src.services.call_services import (
     get_all_calls,
     get_call_by_id,
@@ -9,7 +10,13 @@ from src.services.call_services import (
     get_non_archived_calls,
 )
 
-print(get_all_calls())
+app = FastAPI()
+
+
+@app.get("/All_Calls")
+async def all_calls():
+    return get_all_calls()
+
 
 print(get_non_archived_calls())
 
