@@ -38,6 +38,11 @@ async def unarchive(call_id: str):
     return unarchive_call(call_id)
 
 
+@app.delete("/{call_id}")
+async def delete(call_id: str):
+    return delete_call(call_id)
+
+
 # print(
 #     add_note(
 #         "1",
@@ -49,10 +54,4 @@ async def unarchive(call_id: str):
 #     )
 # )
 
-# print(archive_call("3"))
-
-# print(unarchive_call("10"))
-
 # print(filter_calls("not_archived"))
-
-# print(delete_call("1"))
