@@ -23,23 +23,26 @@ async def non_archived_calls():
     return get_non_archived_calls()
 
 
-print(get_call_by_id("3"))
+@app.get("/{call_id}")
+async def call_by_id(call_id: str):
+    return get_call_by_id(call_id)
 
-print(
-    add_note(
-        "1",
-        {
-            "id": "note-1",
-            "call_id": "1",
-            "content": "Check my schedule for tomorrow",
-        },
-    )
-)
 
-print(archive_call("3"))
+# print(
+#     add_note(
+#         "1",
+#         {
+#             "id": "note-1",
+#             "call_id": "1",
+#             "content": "Check my schedule for tomorrow",
+#         },
+#     )
+# )
 
-print(unarchive_call("10"))
+# print(archive_call("3"))
 
-print(filter_calls("not_archived"))
+# print(unarchive_call("10"))
 
-print(delete_call("1"))
+# print(filter_calls("not_archived"))
+
+# print(delete_call("1"))
