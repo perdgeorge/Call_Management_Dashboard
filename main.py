@@ -33,6 +33,11 @@ async def archive(call_id: str):
     return archive_call(call_id)
 
 
+@app.patch("/Unarchive_call/{call_id}")
+async def unarchive(call_id: str):
+    return unarchive_call(call_id)
+
+
 # print(
 #     add_note(
 #         "1",
