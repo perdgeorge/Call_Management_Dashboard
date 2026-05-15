@@ -3,11 +3,11 @@ from src.services.call_services import (
     get_all_calls,
     get_non_archived_calls,
     get_call_by_id,
-    archive_call,
-    unarchive_call,
-    delete_call,
+    archive_call_by_id,
+    unarchive_call_by_id,
+    delete_call_by_id,
     filter_calls,
-    add_note,
+    add_note_by_id,
 )
 
 app = FastAPI()
@@ -35,14 +35,14 @@ async def filter_call(call_filter: str):
 
 @app.patch("/Archive_Call/{call_id}")
 async def archive(call_id: str):
-    return archive_call(call_id)
+    return archive_call_by_id(call_id)
 
 
 @app.patch("/Unarchive_Call/{call_id}")
 async def unarchive(call_id: str):
-    return unarchive_call(call_id)
+    return unarchive_call_by_id(call_id)
 
 
 @app.delete("/Delete_Call/{call_id}")
 async def delete(call_id: str):
-    return delete_call(call_id)
+    return delete_call_by_id(call_id)
