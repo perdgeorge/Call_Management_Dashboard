@@ -10,8 +10,10 @@ from src.services.call_services import (
     filter_calls,
     add_note_by_id,
 )
+from src.core.exception_handlers import register_exception_handlers
 
 app = FastAPI()
+register_exception_handlers(app)
 
 
 @app.get("/Calls")
