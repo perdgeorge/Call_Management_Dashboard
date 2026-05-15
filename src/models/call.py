@@ -1,17 +1,18 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from src.core.enums import DirectionCall, CallType
+from pydantic import BaseModel
 
 
 @dataclass
-class Note:
+class Note(BaseModel):
     id: str
     call_id: int
     content: str
 
 
 @dataclass
-class Call:
+class Call(BaseModel):
     id: int
     direction: DirectionCall
     from_number: str
