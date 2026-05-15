@@ -7,7 +7,6 @@ from pydantic import BaseModel
 @dataclass
 class Note(BaseModel):
     id: str
-    call_id: int
     content: str
 
 
