@@ -14,7 +14,7 @@ from src.services.call_services import (
 app = FastAPI()
 
 
-@app.get("/All_Calls")
+@app.get("/Calls")
 async def all_calls():
     return get_all_calls()
 
@@ -29,26 +29,26 @@ async def call_by_id(call_id: str):
     return get_call_by_id(call_id)
 
 
-@app.get("/Filter_Calls/{call_filter}")
+@app.get("/Calls/{call_filter}/Filter")
 async def filter_call(call_filter: str):
     return filter_calls(call_filter)
 
 
-@app.patch("/Archive_Call/{call_id}")
+@app.patch("/Calls/{call_id}/Archive")
 async def archive(call_id: str):
     return archive_call_by_id(call_id)
 
 
-@app.patch("/Unarchive_Call/{call_id}")
+@app.patch("/Calls/{call_id}/Unarchive")
 async def unarchive(call_id: str):
     return unarchive_call_by_id(call_id)
 
 
-@app.patch("/Add_Note/{call_id}")
+@app.patch("/Calls/{call_id}/Note")
 async def add_note(call_id: str, note: Note):
     return add_note_by_id(call_id, note)
 
 
-@app.delete("/Delete_Call/{call_id}")
+@app.delete("/Calls/{call_id}")
 async def delete(call_id: str):
     return delete_call_by_id(call_id)
