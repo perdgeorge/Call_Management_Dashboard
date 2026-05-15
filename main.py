@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from src.models.call import Note
 from src.services.call_services import (
     get_all_calls,
     get_non_archived_calls,
@@ -41,6 +42,11 @@ async def archive(call_id: str):
 @app.patch("/Unarchive_Call/{call_id}")
 async def unarchive(call_id: str):
     return unarchive_call_by_id(call_id)
+
+
+@app.patch("/Add_Note/{call_id}")
+async def add_note(call_id: str, note: Note):
+    return add_note_by_id(call_id, note)
 
 
 @app.delete("/Delete_Call/{call_id}")
