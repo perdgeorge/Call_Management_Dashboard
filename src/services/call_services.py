@@ -1,5 +1,6 @@
 from src.data.seed_data import calls
 from src.models.call import Call, Note
+from src.core.exceptions import CallNotFoundError
 
 
 def get_all_calls() -> list[Call]:
@@ -20,7 +21,7 @@ def get_call_by_id(call_id: str) -> Call | str:
         if call["id"] == call_id:
             validate_call(call)
             return call
-    return f"Call with ID:{call_id} is not exist!"
+    raise CallNotFoundError(call_id)
 
 
 def add_note_by_id(call_id: str, note: Note) -> Call | str:
@@ -33,7 +34,7 @@ def add_note_by_id(call_id: str, note: Note) -> Call | str:
             else:
                 call["notes"].append(note)
                 return call
-    return f"Call with ID:{call_id} is not exist!"
+    raise CallNotFoundError(call_id)
 
 
 def archive_call_by_id(call_id: str) -> str:
@@ -45,7 +46,7 @@ def archive_call_by_id(call_id: str) -> str:
             else:
                 call["is_archived"] = True
                 return f"Call with ID:{call_id} has been archived!"
-    return f"Call with ID:{call_id} is not exist!"
+    raise CallNotFoundError(call_id)
 
 
 def unarchive_call_by_id(call_id: str) -> str:
@@ -57,7 +58,7 @@ def unarchive_call_by_id(call_id: str) -> str:
                 return f"Call with ID:{call_id} has been unarchived!"
             else:
                 return f"Call with ID:{call_id} is already unarchived!"
-    return f"Call with ID:{call_id} is not exist!"
+    raise CallNotFoundError(call_id)
 
 
 def filter_calls(call_filter: str) -> list[Call] | str:
@@ -71,7 +72,7 @@ def filter_calls(call_filter: str) -> list[Call] | str:
     elif call_filter == "not_archived":
         return [call for call in all_calls if call["is_archived"] is False]
     else:
-        return "Error: Invalid filter! Filter must be either answered, voicemail, missed, outbound, inbound, archived or not_archived"
+        raise "Error: Invalid filter! Filter must be either answered, voicemail, missed, outbound, inbound, archived or not_archived"
 
 
 def delete_call_by_id(call_id: str) -> str:
@@ -80,7 +81,7 @@ def delete_call_by_id(call_id: str) -> str:
             validate_call(call)
             calls.remove(call)
             return f"Call with ID:{call_id} is deleted!"
-    return f"Call with ID:{call_id} is not exist!"
+    raise CallNotFoundError(call_id)
 
 
 def validate_call(call: Call) -> str | None:
