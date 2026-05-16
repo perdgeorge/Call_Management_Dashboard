@@ -54,3 +54,8 @@ async def add_note(call_id: str, note: Note):
 @app.delete("/Calls/{call_id}")
 async def delete(call_id: str):
     return delete_call_by_id(call_id)
+
+
+@app.get("/health")
+async def health_check():
+    return {"200": "OK"}
