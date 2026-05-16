@@ -21,3 +21,15 @@ class CallNotFoundError(CallBaseException):
             error_code="Call Not Found",
             status_code=404,
         )
+
+
+class CallFilterNotFoundError(CallBaseException):
+    def __init__(
+        self,
+        call_filter: str,
+    ):
+        super().__init__(
+            message="Filters available: answered, voicemail, missed, outbound, inbound, archived or not_archived",
+            error_code="Invalid_Filter",
+            status_code=404,
+        )
