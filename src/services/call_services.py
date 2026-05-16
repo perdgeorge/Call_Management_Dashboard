@@ -1,6 +1,6 @@
 from src.data.seed_data import calls
 from src.models.call import Call, Note
-from src.core.exceptions import CallNotFoundError
+from src.core.exceptions import CallNotFoundError, CallFilterNotFoundError
 
 
 def get_all_calls() -> list[Call]:
@@ -71,8 +71,7 @@ def filter_calls(call_filter: str) -> list[Call] | str:
         return [call for call in all_calls if call["is_archived"] is True]
     elif call_filter == "not_archived":
         return [call for call in all_calls if call["is_archived"] is False]
-    else:
-        raise "Error: Invalid filter! Filter must be either answered, voicemail, missed, outbound, inbound, archived or not_archived"
+    raise CallFilterNotFoundError(call_filter)
 
 
 def delete_call_by_id(call_id: str) -> str:
