@@ -1,7 +1,7 @@
 from enum import StrEnum
 
 
-class DirectionCall(StrEnum):
+class CallDirection(StrEnum):
     INBOUND = "inbound"
     OUTBOUND = "outbound"
 
