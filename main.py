@@ -26,7 +26,7 @@ async def non_archived_calls():
     return get_non_archived_calls()
 
 
-@app.get("/{call_id}")
+@app.get("/Calls/{call_id}")
 async def call_by_id(call_id: str):
     return get_call_by_id(call_id)
 
