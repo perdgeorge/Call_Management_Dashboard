@@ -65,6 +65,7 @@ def unarchive_call_by_id(call_id: str) -> str:
 def filter_calls(call_filter: str) -> list[Call] | str:
     Call_Directions = [direction.value for direction in CallDirection]
     Call_Types = [call_type.value for call_type in CallType]
+    call_filter = call_filter.lower()
     all_calls = get_all_calls()
     if call_filter in Call_Types:
         return [call for call in all_calls if call["call_type"] == call_filter]
