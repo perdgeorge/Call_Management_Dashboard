@@ -1,35 +1,61 @@
+from fastapi import FastAPI
+from src.models.call import Note
 from src.services.call_services import (
     get_all_calls,
-    get_call_by_id,
-    archive_call,
-    unarchive_call,
-    delete_call,
-    filter_calls,
-    add_note,
     get_non_archived_calls,
+    get_call_by_id,
+    archive_call_by_id,
+    unarchive_call_by_id,
+    delete_call_by_id,
+    filter_calls,
+    add_note_by_id,
 )
+from src.core.exception_handlers import register_exception_handlers
 
-print(get_all_calls())
+app = FastAPI()
+register_exception_handlers(app)
 
-print(get_non_archived_calls())
 
-print(get_call_by_id("3"))
+@app.get("/Calls")
+async def all_calls():
+    return get_all_calls()
 
-print(
-    add_note(
-        "1",
-        {
-            "id": "note-1",
-            "call_id": "1",
-            "content": "Check my schedule for tomorrow",
-        },
-    )
-)
 
-print(archive_call("3"))
+@app.get("/Non_Archived_Calls")
+async def non_archived_calls():
+    return get_non_archived_calls()
 
-print(unarchive_call("10"))
 
-print(filter_calls("not_archived"))
+@app.get("/Calls/{call_id}")
+async def call_by_id(call_id: str):
+    return get_call_by_id(call_id)
 
-print(delete_call("1"))
+
+@app.get("/Calls/{call_filter}/Filter")
+async def filter_call(call_filter: str):
+    return filter_calls(call_filter)
+
+
+@app.patch("/Calls/{call_id}/Archive")
+async def archive(call_id: str):
+    return archive_call_by_id(call_id)
+
+
+@app.patch("/Calls/{call_id}/Unarchive")
+async def unarchive(call_id: str):
+    return unarchive_call_by_id(call_id)
+
+
+@app.patch("/Calls/{call_id}/Note")
+async def add_note(call_id: str, note: Note):
+    return add_note_by_id(call_id, note)
+
+
+@app.delete("/Calls/{call_id}")
+async def delete(call_id: str):
+    return delete_call_by_id(call_id)
+
+
+@app.get("/health")
+async def health_check():
+    return {"200": "OK"}
