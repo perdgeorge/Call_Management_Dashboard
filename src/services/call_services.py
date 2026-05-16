@@ -1,6 +1,7 @@
 from src.data.seed_data import calls
 from src.models.call import Call, Note
 from src.core.exceptions import CallNotFoundError, CallFilterNotFoundError
+from src.core.enums import CallType, CallDirection
 
 
 def get_all_calls() -> list[Call]:
@@ -62,10 +63,12 @@ def unarchive_call_by_id(call_id: str) -> str:
 
 
 def filter_calls(call_filter: str) -> list[Call] | str:
+    Call_Directions = [direction.value for direction in CallDirection]
+    Call_Types = [call_type.value for call_type in CallType]
     all_calls = get_all_calls()
-    if call_filter in ("answered", "voicemail", "missed"):
+    if call_filter in Call_Types:
         return [call for call in all_calls if call["call_type"] == call_filter]
-    elif call_filter in ("outbound", "inbound"):
+    elif call_filter in Call_Directions:
         return [call for call in all_calls if call["direction"] == call_filter]
     elif call_filter == "archived":
         return [call for call in all_calls if call["is_archived"] is True]
@@ -84,11 +87,13 @@ def delete_call_by_id(call_id: str) -> str:
 
 
 def validate_call(call: Call) -> str | None:
+    Call_Directions = [direction.value for direction in CallDirection]
+    Call_Types = [call_type.value for call_type in CallType]
     caller = call["from_number"].replace(" ", "")
     receiver = call["to_number"].replace(" ", "")
-    if call["direction"] not in ("inbound", "outbound"):
+    if call["direction"] not in Call_Directions:
         raise ValueError("Error: A call's direction must be Inbound or Outbound")
-    if call["call_type"] not in ("answered", "voicemail", "missed"):
+    if call["call_type"] not in Call_Types:
         raise ValueError(
             "Error: A call's call type must be either answered, voicemail or missed"
         )
