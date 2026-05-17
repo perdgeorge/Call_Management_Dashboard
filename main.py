@@ -27,32 +27,32 @@ async def non_archived_calls():
 
 
 @app.get("/Calls/{call_id}")
-async def call_by_id(call_id: str):
+async def call_by_id(call_id: int):
     return get_call_by_id(call_id)
 
 
 @app.get("/Calls/{call_filter}/Filter")
-async def filter_call(call_filter: str):
+async def filter_call(call_filter: int):
     return filter_calls(call_filter)
 
 
 @app.patch("/Calls/{call_id}/Archive")
-async def archive(call_id: str):
+async def archive(call_id: int):
     return archive_call_by_id(call_id)
 
 
 @app.patch("/Calls/{call_id}/Unarchive")
-async def unarchive(call_id: str):
+async def unarchive(call_id: int):
     return unarchive_call_by_id(call_id)
 
 
 @app.patch("/Calls/{call_id}/Note")
-async def add_note(call_id: str, note: Note):
+async def add_note(call_id: int, note: Note):
     return add_note_by_id(call_id, note)
 
 
 @app.delete("/Calls/{call_id}")
-async def delete(call_id: str):
+async def delete(call_id: int):
     return delete_call_by_id(call_id)
 
 

@@ -17,7 +17,7 @@ def get_non_archived_calls() -> list[Call]:
     return calls_numbers
 
 
-def get_call_by_id(call_id: str) -> Call | str:
+def get_call_by_id(call_id: int) -> Call | str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -25,7 +25,7 @@ def get_call_by_id(call_id: str) -> Call | str:
     raise CallNotFoundError(call_id)
 
 
-def add_note_by_id(call_id: str, note: Note) -> Call | str:
+def add_note_by_id(call_id: int, note: Note) -> Call | str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -38,7 +38,7 @@ def add_note_by_id(call_id: str, note: Note) -> Call | str:
     raise CallNotFoundError(call_id)
 
 
-def archive_call_by_id(call_id: str) -> str:
+def archive_call_by_id(call_id: int) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -50,7 +50,7 @@ def archive_call_by_id(call_id: str) -> str:
     raise CallNotFoundError(call_id)
 
 
-def unarchive_call_by_id(call_id: str) -> str:
+def unarchive_call_by_id(call_id: int) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -78,7 +78,7 @@ def filter_calls(call_filter: str) -> list[Call] | str:
     raise CallFilterNotFoundError(call_filter)
 
 
-def delete_call_by_id(call_id: str) -> str:
+def delete_call_by_id(call_id: int) -> str:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
