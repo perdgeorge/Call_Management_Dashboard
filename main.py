@@ -20,22 +20,32 @@ app = FastAPI()
 register_exception_handlers(app)
 
 
-@app.get("/Calls", response_model=list[GetCallSchema])
+@app.get("/Calls", response_model=list[GetCallSchema], response_model_exclude_none=True)
 async def all_calls():
     return get_all_calls()
 
 
-@app.get("/Non_Archived_Calls", response_model=list[GetCallSchema])
+@app.get(
+    "/Non_Archived_Calls",
+    response_model=list[GetCallSchema],
+    response_model_exclude_none=True,
+)
 async def non_archived_calls():
     return get_non_archived_calls()
 
 
-@app.get("/Calls/{call_id}", response_model=GetCallSchema)
+@app.get(
+    "/Calls/{call_id}", response_model=GetCallSchema, response_model_exclude_none=True
+)
 async def call_by_id(call_id: int):
     return get_call_by_id(call_id)
 
 
-@app.get("/Calls/{call_filter}/Filter", response_model=list[GetCallSchema])
+@app.get(
+    "/Calls/{call_filter}/Filter",
+    response_model=list[GetCallSchema],
+    response_model_exclude_none=True,
+)
 async def filter_call(call_filter: str):
     return filter_calls(call_filter)
 
