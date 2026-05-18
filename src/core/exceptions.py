@@ -33,3 +33,15 @@ class CallFilterNotFoundError(CallBaseException):
             error_code="Invalid_Filter",
             status_code=404,
         )
+
+
+class CallInvalidDataError(CallBaseException):
+    def __init__(
+        self,
+        call_value: str | int,
+    ):
+        super().__init__(
+            message=f"Invalid Call Value {call_value} stored in database",
+            error_code="Invalid Data",
+            status_code=422,
+        )
