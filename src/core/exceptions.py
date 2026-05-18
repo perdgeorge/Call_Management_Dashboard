@@ -29,7 +29,7 @@ class CallFilterNotFoundError(CallBaseException):
         call_filter: str,
     ):
         super().__init__(
-            message="Filters available: answered, voicemail, missed, outbound, inbound, archived or not_archived",
+            message=f"Filter '{call_filter}' is not valid. Available filters: answered, voicemail, missed, outbound, inbound, archived or not_archived",
             error_code="Invalid_Filter",
             status_code=404,
         )
