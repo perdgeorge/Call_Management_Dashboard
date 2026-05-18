@@ -65,7 +65,7 @@ async def add_note(call_id: int, note: CreateNoteSchema):
     return add_note_by_id(call_id, note)
 
 
-@app.delete("/Calls/{call_id}", response_model=DeleteCallSchema)
+@app.delete("/Calls/{call_id}")
 async def delete(call_id: int):
     return delete_call_by_id(call_id)
 
