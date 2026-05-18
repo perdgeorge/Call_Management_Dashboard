@@ -2,6 +2,7 @@ from src.core.schemas import CreateNoteSchema, GetCallSchema
 from src.data.seed_data import calls
 from src.models.call import Call
 from src.core.exceptions import (
+    CallInvalidDataError,
     CallNotFoundError,
     CallFilterNotFoundError,
 )
@@ -96,18 +97,16 @@ def validate_call(call: Call):
     caller = call["from_number"].replace(" ", "")
     receiver = call["to_number"].replace(" ", "")
     if call["direction"] not in Call_Directions:
-        raise ValueError("Error: A call's direction must be Inbound or Outbound")
+        raise CallInvalidDataError(
+            call["direction"],
+        )
     if call["call_type"] not in Call_Types:
-        raise ValueError(
-            "Error: A call's call type must be either answered, voicemail or missed"
+        raise CallInvalidDataError(
+            call["call_type"],
         )
     if type(call["duration"]) is not int:
-        raise ValueError("Error: A call's duration must be integer")
+        raise CallInvalidDataError("Error: A call's duration must be integer")
     if caller[0] != "+" or not caller[1:].isdigit():
-        raise ValueError(
-            "Error: A call's from_number must have the format of +30 697 1234567"
-        )
+        raise CallInvalidDataError(call["from_number"])
     if receiver[0] != "+" or not receiver[1:].isdigit():
-        raise ValueError(
-            "Error: A call's to_number must have the format of +30 697 1234567"
-        )
+        raise CallInvalidDataError(call["to_number"])
