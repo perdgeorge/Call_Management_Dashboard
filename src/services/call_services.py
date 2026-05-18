@@ -1,31 +1,34 @@
+from src.core.schemas import CreateNoteSchema, GetCallSchema
 from src.data.seed_data import calls
-from src.models.call import Call, Note
-from src.core.exceptions import CallNotFoundError, CallFilterNotFoundError
+from src.models.call import Call
+from src.core.exceptions import (
+    CallNotFoundError,
+    CallFilterNotFoundError,
+)
 from src.core.enums import CallType, CallDirection
 
 
-def get_all_calls() -> list[Call]:
+def get_all_calls() -> list[GetCallSchema]:
     for call in calls:
         validate_call(call)
     return calls
 
 
-def get_non_archived_calls() -> list[Call]:
+def get_non_archived_calls() -> list[GetCallSchema]:
     calls_numbers = [call for call in calls if not call["is_archived"]]
     for number in calls_numbers:
         validate_call(number)
     return calls_numbers
 
 
-def get_call_by_id(call_id: int) -> Call | str:
+def get_call_by_id(call_id: int) -> GetCallSchema:
     for call in calls:
         if call["id"] == call_id:
-            validate_call(call)
             return call
     raise CallNotFoundError(call_id)
 
 
-def add_note_by_id(call_id: int, note: Note) -> Call | str:
+def add_note_by_id(call_id: int, note: CreateNoteSchema) -> GetCallSchema:
     for call in calls:
         if call["id"] == call_id:
             validate_call(call)
@@ -62,7 +65,7 @@ def unarchive_call_by_id(call_id: int) -> str:
     raise CallNotFoundError(call_id)
 
 
-def filter_calls(call_filter: str) -> list[Call] | str:
+def filter_calls(call_filter: str) -> list[GetCallSchema]:
     Call_Directions = [direction.value for direction in CallDirection]
     Call_Types = [call_type.value for call_type in CallType]
     call_filter = call_filter.lower()
@@ -87,7 +90,7 @@ def delete_call_by_id(call_id: int) -> str:
     raise CallNotFoundError(call_id)
 
 
-def validate_call(call: Call) -> str | None:
+def validate_call(call: Call):
     Call_Directions = [direction.value for direction in CallDirection]
     Call_Types = [call_type.value for call_type in CallType]
     caller = call["from_number"].replace(" ", "")
