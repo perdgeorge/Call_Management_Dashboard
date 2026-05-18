@@ -9,12 +9,12 @@ class BaseSchema(BaseModel):
 
 
 class NoteSchema(BaseSchema):
-    content: str = Field(examples="Follow up about billing")
+    content: str = Field(examples=["Follow up about billing"])
 
 
 class GetNoteSchema(NoteSchema):
-    id: int = Field(examples=1)
-    call_id: int = Field(examples=1)
+    id: int = Field(examples=[1])
+    call_id: int = Field(examples=[1])
 
 
 class CreateNoteSchema(NoteSchema):
@@ -22,14 +22,14 @@ class CreateNoteSchema(NoteSchema):
 
 
 class GetCallSchema(BaseSchema):
-    id: int = Field(..., examples=1)
-    direction: CallDirection = Field(..., examples="inbound")
-    from_number: str = Field(..., max_length=15, examples="+30 123 4567890")
-    to_number: str = Field(..., max_length=15, examples="+30 098 7654321")
-    call_type: CallType = Field(..., examples="answered")
-    duration: int = Field(..., examples=120)
-    created_at: datetime = Field(..., examples="2023-01-01T00:00:00")
-    is_archived: bool = Field(..., examples=False)
+    id: int = Field(..., examples=[1])
+    direction: CallDirection = Field(..., examples=["inbound"])
+    from_number: str = Field(..., max_length=15, examples=["+30 123 4567890"])
+    to_number: str = Field(..., max_length=15, examples=["+30 098 7654321"])
+    call_type: CallType = Field(..., examples=["answered"])
+    duration: int = Field(..., examples=[120])
+    created_at: datetime = Field(..., examples=["2023-01-01T00:00:00"])
+    is_archived: bool = Field(..., examples=[False])
     notes: List[GetNoteSchema] | None = Field(
         examples=[
             {
@@ -43,7 +43,7 @@ class GetCallSchema(BaseSchema):
 
 
 class UpdateCallSchema(BaseSchema):
-    is_archived: bool = Field(..., examples=False)
+    is_archived: bool = Field(..., examples=[False])
     notes: List[GetNoteSchema] | None = Field(
         examples=[
             {
