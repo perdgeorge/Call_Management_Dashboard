@@ -8,6 +8,7 @@ from src.services.call_services import (
     delete_call_by_id,
     filter_calls,
     add_note_by_id,
+    archive_all_calls,
 )
 from src.core.exception_handlers import register_exception_handlers
 from src.core.schemas import (
@@ -47,6 +48,11 @@ async def call_by_id(call_id: int):
 )
 async def filter_call(call_filter: str):
     return filter_calls(call_filter)
+
+
+@app.patch("/Calls/Archive_all")
+async def archive_all():
+    return archive_all_calls()
 
 
 @app.patch("/Calls/{call_id}/Archive")
