@@ -20,13 +20,13 @@ app = FastAPI()
 register_exception_handlers(app)
 
 
-@app.get("/Calls", response_model=list[GetCallSchema], response_model_exclude_none=True)
+@app.get("/calls", response_model=list[GetCallSchema], response_model_exclude_none=True)
 async def all_calls():
     return get_all_calls()
 
 
 @app.get(
-    "/Non_Archived_Calls",
+    "/calls/non-archived",
     response_model=list[GetCallSchema],
     response_model_exclude_none=True,
 )
@@ -35,14 +35,14 @@ async def non_archived_calls():
 
 
 @app.get(
-    "/Calls/{call_id}", response_model=GetCallSchema, response_model_exclude_none=True
+    "/calls/{call_id}", response_model=GetCallSchema, response_model_exclude_none=True
 )
 async def call_by_id(call_id: int):
     return get_call_by_id(call_id)
 
 
 @app.get(
-    "/Calls/{call_filter}/Filter",
+    "/calls/{call_filter}/filter",
     response_model=list[GetCallSchema],
     response_model_exclude_none=True,
 )
@@ -50,27 +50,27 @@ async def filter_call(call_filter: str):
     return filter_calls(call_filter)
 
 
-@app.patch("/Calls/Archive_all")
+@app.patch("/calls/archive-all")
 async def archive_all():
     return archive_all_calls()
 
 
-@app.patch("/Calls/{call_id}/Archive")
+@app.patch("/calls/{call_id}/archive")
 async def archive(call_id: int):
     return archive_call_by_id(call_id)
 
 
-@app.patch("/Calls/{call_id}/Unarchive")
+@app.patch("/calls/{call_id}/unarchive")
 async def unarchive(call_id: int):
     return unarchive_call_by_id(call_id)
 
 
-@app.patch("/Calls/{call_id}/Note")
+@app.patch("/calls/{call_id}/notes")
 async def add_note(call_id: int, note: CreateNoteSchema):
     return add_note_by_id(call_id, note)
 
 
-@app.delete("/Calls/{call_id}")
+@app.delete("/calls/{call_id}")
 async def delete(call_id: int):
     return delete_call_by_id(call_id)
 
