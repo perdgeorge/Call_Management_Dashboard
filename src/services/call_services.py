@@ -66,6 +66,13 @@ def unarchive_call_by_id(call_id: int) -> str:
     raise CallNotFoundError(call_id)
 
 
+def archive_all_calls() -> str:
+    calls_numbers = [call for call in calls if not call["is_archived"]]
+    for number in calls_numbers:
+        number["is_archived"] = True
+    return "All calls have been archived"
+
+
 def filter_calls(call_filter: str) -> list[GetCallSchema]:
     Call_Directions = [direction.value for direction in CallDirection]
     Call_Types = [call_type.value for call_type in CallType]
