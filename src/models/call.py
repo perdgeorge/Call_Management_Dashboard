@@ -1,17 +1,10 @@
 from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Boolean, DateTime, Enum, func, ForeignKey
+from sqlalchemy import String, Boolean, DateTime, Enum, func
+
 from src.core.enums import CallDirection, CallType
 from src.core.database import Base
-
-
-class Note(Base):
-    __tablename__ = "notes"
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    content: Mapped[str] = mapped_column(String(), nullable=False)
-    call_id: Mapped[int] = mapped_column(ForeignKey("calls.id"))
-    call: Mapped["Call"] = relationship(back_populates="notes")
+from src.models.note import Note
 
 
 class Call(Base):
