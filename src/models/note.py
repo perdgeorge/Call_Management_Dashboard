@@ -1,8 +1,12 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, ForeignKey
 
 from src.core.database import Base
-from src.models.call import Call
+
+if TYPE_CHECKING:
+    from src.models.call import Call
 
 
 class Note(Base):
