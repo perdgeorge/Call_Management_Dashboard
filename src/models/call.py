@@ -1,23 +1,32 @@
-from dataclasses import dataclass, field
 from datetime import datetime
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, Boolean, DateTime, Enum, func, ForeignKey
 from src.core.enums import CallDirection, CallType
-from pydantic import BaseModel
+from src.core.database import Base
 
 
-@dataclass
-class Note(BaseModel):
-    id: str
-    content: str
+class Note(Base):
+    __tablename__ = "notes"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    content: Mapped[str] = mapped_column(String(), nullable=False)
+    call_id: Mapped[int] = mapped_column(ForeignKey("calls.id"))
+    call: Mapped["Call"] = relationship(back_populates="notes")
 
 
-@dataclass
-class Call(BaseModel):
-    id: int
-    direction: CallDirection
-    from_number: str
-    to_number: str
-    call_type: CallType
-    duration: int
-    is_archived: bool
-    created_at: datetime
-    notes: list[Note] = field(default_factory=list)
+class Call(Base):
+    __tablename__ = "calls"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    direction: Mapped[CallDirection] = mapped_column(
+        Enum(CallDirection), nullable=False
+    )
+    from_number: Mapped[str] = mapped_column(String(15), nullable=False)
+    to_number: Mapped[str] = mapped_column(String(15), nullable=False)
+    call_type: Mapped[CallType] = mapped_column(Enum(CallType), nullable=False)
+    duration: Mapped[int] = mapped_column(nullable=True)
+    is_archived: Mapped[bool] = mapped_column(Boolean(), default=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=func.now()
+    )
+    notes: Mapped[list[Note]] = relationship(back_populates="call")
