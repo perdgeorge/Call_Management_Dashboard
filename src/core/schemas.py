@@ -18,7 +18,7 @@ class GetNoteSchema(NoteSchema):
     call_id: int = Field(examples=[1])
 
 
-class CreateNoteSchema(NoteSchema):
+class CreateNoteSchema(GetNoteSchema):
     pass
 
 
