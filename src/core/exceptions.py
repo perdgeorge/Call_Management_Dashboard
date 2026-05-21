@@ -1,0 +1,47 @@
+class CallBaseException(Exception):
+    def __init__(
+        self,
+        message: str,
+        error_code: str,
+        status_code: int = 400,
+    ):
+        self.message = message
+        self.error_code = error_code
+        self.status_code = status_code
+        super().__init__(message)
+
+
+class CallNotFoundError(CallBaseException):
+    def __init__(
+        self,
+        call_id: int,
+    ):
+        super().__init__(
+            message=f"Call with ID:{call_id} not found",
+            error_code="Call Not Found",
+            status_code=404,
+        )
+
+
+class CallFilterNotFoundError(CallBaseException):
+    def __init__(
+        self,
+        call_filter: str,
+    ):
+        super().__init__(
+            message=f"Filter '{call_filter}' is not valid. Available filters: answered, voicemail, missed, outbound, inbound, archived or not_archived",
+            error_code="Invalid_Filter",
+            status_code=404,
+        )
+
+
+class CallInvalidDataError(CallBaseException):
+    def __init__(
+        self,
+        call_value: str | int,
+    ):
+        super().__init__(
+            message=f"Invalid Call Value {call_value} stored in database",
+            error_code="Invalid Data",
+            status_code=422,
+        )
