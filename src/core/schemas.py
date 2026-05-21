@@ -72,7 +72,3 @@ class UpdateCallSchema(BaseSchema):
         ],
         default=None,
     )
-
-
-class DeleteCallSchema(GetCallSchema):
-    pass
