@@ -6,6 +6,9 @@ from src.core.exceptions import (
 )
 from src.core.enums import CallType, CallDirection
 
+call_directions = [direction.value for direction in CallDirection]
+call_types = [call_type.value for call_type in CallType]
+
 
 def get_all_calls() -> list[GetCallSchema]:
     return [GetCallSchema.model_validate(call) for call in calls]
@@ -69,13 +72,11 @@ def archive_all_calls() -> str:
 
 
 def filter_calls(call_filter: str) -> list[GetCallSchema]:
-    Call_Directions = [direction.value for direction in CallDirection]
-    Call_Types = [call_type.value for call_type in CallType]
     call_filter = call_filter.lower()
     all_calls = get_all_calls()
-    if call_filter in Call_Types:
+    if call_filter in call_types:
         return [call for call in all_calls if call.call_type == call_filter]
-    elif call_filter in Call_Directions:
+    elif call_filter in call_directions:
         return [call for call in all_calls if call.direction == call_filter]
     elif call_filter == "archived":
         return [call for call in all_calls if call.is_archived is True]
