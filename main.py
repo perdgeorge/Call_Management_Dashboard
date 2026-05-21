@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from src.services.call_services import (
     get_all_calls,
     get_non_archived_calls,
@@ -77,4 +77,4 @@ async def delete(call_id: int):
 
 @app.get("/health")
 async def health_check():
-    return {"200": "OK"}
+    raise HTTPException(status_code=200, detail="ok")
