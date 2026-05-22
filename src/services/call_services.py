@@ -1,13 +1,35 @@
-from src.core.schemas import CreateNoteSchema, GetCallSchema
+from src.core.schemas import CallSchema, CreateNoteSchema, GetCallSchema
 from src.data.seed_data import calls
 from src.core.exceptions import (
     CallNotFoundError,
     CallFilterNotFoundError,
 )
 from src.core.enums import CallType, CallDirection
+from src.models.call import Call
 
 call_directions = [direction.value for direction in CallDirection]
 call_types = [call_type.value for call_type in CallType]
+
+
+def add_call(self, call: Call) -> GetCallSchema:
+    self.db.add(call)
+    self.db.commit()
+    self.db.refresh(call)
+    return GetCallSchema.model_validate(call)
+
+
+def create_call(self, call_data: CallSchema) -> GetCallSchema:
+    new_call = Call(
+        direction=call_data.direction,
+        from_number=call_data.from_number,
+        to_number=call_data.to_number,
+        call_type=call_data.call_type,
+        duration=call_data.duration,
+        created_at=call_data.created_at,
+        is_archived=call_data.is_archived,
+        notes=call_data.notes,
+    )
+    return self.add_call(new_call)
 
 
 def get_all_calls() -> list[GetCallSchema]:
