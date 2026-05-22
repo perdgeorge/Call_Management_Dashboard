@@ -56,10 +56,6 @@ class GetCallSchema(CallSchema):
     id: int = Field(..., examples=[1])
 
 
-class CreateCallSchema(CallSchema):
-    pass
-
-
 class UpdateCallSchema(BaseSchema):
     is_archived: bool = Field(..., examples=[False])
     notes: List[CreateNoteSchema] | None = Field(
