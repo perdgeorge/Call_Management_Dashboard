@@ -12,12 +12,18 @@ from src.services.call_services import (
 )
 from src.core.exception_handlers import register_exception_handlers
 from src.core.schemas import (
+    CallSchema,
     GetCallSchema,
     CreateNoteSchema,
 )
 
 app = FastAPI()
 register_exception_handlers(app)
+
+
+@app.post("/calls", response_model=GetCallSchema, response_model_exclude_none=True)
+async def create_call(call: CallSchema):
+    return create_call(call)
 
 
 @app.get("/calls", response_model=list[GetCallSchema], response_model_exclude_none=True)
