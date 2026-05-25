@@ -6,6 +6,7 @@ from src.core.exceptions import (
 )
 from src.core.enums import CallType, CallDirection
 from src.models.call import Call
+from src.models.note import Note
 
 call_directions = [direction.value for direction in CallDirection]
 call_types = [call_type.value for call_type in CallType]
@@ -49,16 +50,22 @@ def get_call_by_id(db: Session, call_id: int) -> GetCallSchema:
     raise CallNotFoundError(call_id)
 
 
-def add_note_by_id(call_id: int, note: GetNoteSchema) -> GetCallSchema:
-    for call in calls:
-        GetCallSchema.model_validate(call)
-        if call["id"] == call_id:
-            if "notes" not in call:
-                call.update({"notes": [note]})
-                return call
-            else:
-                call["notes"].append(note)
-                return call
+def create_note(db: Session, note: Note) -> GetNoteSchema:
+    new_note = Note(content=note.content, call_id=note.call_id)
+    db.add(new_note)
+    db.commit()
+    db.refresh(new_note)
+    return GetNoteSchema.model_validate(new_note)
+
+
+def add_note_by_id(db: Session, call_id: int, new_note: GetNoteSchema) -> GetCallSchema:
+    call = db.query(Call).filter(Call.id == call_id).first()
+    if call:
+        call.notes.append(Note(content=new_note.content, call_id=call_id))
+        db.commit()
+        db.refresh(call)
+        return GetCallSchema.model_validate(call)
+    raise CallNotFoundError(call_id)
 
 
 def archive_call_by_id(db: Session, call_id: int) -> str:
