@@ -38,9 +38,9 @@ def get_all_calls(db: Session) -> list[GetCallSchema]:
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
-def get_non_archived_calls() -> list[GetCallSchema]:
-    calls_numbers = [GetCallSchema.model_validate(call) for call in calls]
-    return [call for call in calls_numbers if not call.is_archived]
+def get_non_archived_calls(db: Session) -> list[GetCallSchema]:
+    calls = db.query(Call).filter(not Call.is_archived).all()
+    return [GetCallSchema.model_validate(call) for call in calls]
 
 
 def get_call_by_id(call_id: int) -> GetCallSchema:
