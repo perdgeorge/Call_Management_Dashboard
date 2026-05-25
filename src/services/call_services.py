@@ -93,9 +93,9 @@ def archive_all_calls(db: Session) -> str:
     return "All calls have been archived"
 
 
-def filter_calls(call_filter: str) -> list[GetCallSchema]:
+def filter_calls(db: Session, call_filter: str) -> list[GetCallSchema]:
     call_filter = call_filter.lower()
-    all_calls = get_all_calls()
+    all_calls = get_all_calls(db)
     if call_filter in call_types:
         return [call for call in all_calls if call.call_type == call_filter]
     elif call_filter in call_directions:
