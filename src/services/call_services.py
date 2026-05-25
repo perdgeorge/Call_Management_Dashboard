@@ -107,10 +107,10 @@ def filter_calls(db: Session, call_filter: str) -> list[GetCallSchema]:
     raise CallFilterNotFoundError(call_filter)
 
 
-def delete_call_by_id(call_id: int) -> str:
-    for call in calls:
-        GetCallSchema.model_validate(call)
-        if call["id"] == call_id:
-            calls.remove(call)
-            return f"Call with ID:{call_id} is deleted!"
+def delete_call_by_id(db: Session, call_id: int) -> str:
+    call = db.query(Call).filter(Call.id == call_id).first()
+    if call:
+        db.delete(call)
+        db.commit()
+        return f"Call with ID:{call_id} is deleted!"
     raise CallNotFoundError(call_id)
