@@ -63,15 +63,14 @@ def add_note_by_id(call_id: int, note: CreateNoteSchema) -> GetCallSchema:
     raise CallNotFoundError(call_id)
 
 
-def archive_call_by_id(call_id: int) -> str:
-    for call in calls:
-        GetCallSchema.model_validate(call)
-        if call["id"] == call_id:
-            if call["is_archived"]:
-                return f"Call with ID:{call_id} is already archived!"
-            else:
-                call["is_archived"] = True
-                return f"Call with ID:{call_id} has been archived!"
+def archive_call_by_id(db: Session, call_id: int) -> str:
+    call = db.query(Call).filter(Call.id == call_id).first()
+    if call:
+        if call.is_archived:
+            return f"Call with ID:{call_id} is already archived!"
+        call.is_archived = True
+        db.commit()
+        return f"Call with ID:{call_id} has been archived!"
     raise CallNotFoundError(call_id)
 
 
