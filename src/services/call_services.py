@@ -85,11 +85,11 @@ def unarchive_call_by_id(db: Session, call_id: int) -> str:
     raise CallNotFoundError(call_id)
 
 
-def archive_all_calls() -> str:
-    [GetCallSchema.model_validate(call) for call in calls]
-    calls_numbers = [call for call in calls if not call["is_archived"]]
-    for number in calls_numbers:
-        number["is_archived"] = True
+def archive_all_calls(db: Session) -> str:
+    calls = db.query(Call).all()
+    for call in calls:
+        call.is_archived = True
+    db.commit()
     return "All calls have been archived"
 
 
