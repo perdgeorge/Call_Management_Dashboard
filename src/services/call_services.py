@@ -1,3 +1,4 @@
+from sqlalchemy.orm import Session
 from src.core.schemas import CallSchema, CreateNoteSchema, GetCallSchema
 from src.data.seed_data import calls
 from src.core.exceptions import (
@@ -11,14 +12,14 @@ call_directions = [direction.value for direction in CallDirection]
 call_types = [call_type.value for call_type in CallType]
 
 
-def add_call(self, call: Call) -> GetCallSchema:
-    self.db.add(call)
-    self.db.commit()
-    self.db.refresh(call)
+def add_call(db: Session, call: Call) -> GetCallSchema:
+    db.add(call)
+    db.commit()
+    db.refresh(call)
     return GetCallSchema.model_validate(call)
 
 
-def create_call(self, call_data: CallSchema) -> GetCallSchema:
+def create_call(db: Session, call_data: CallSchema) -> GetCallSchema:
     new_call = Call(
         direction=call_data.direction,
         from_number=call_data.from_number,
@@ -29,7 +30,7 @@ def create_call(self, call_data: CallSchema) -> GetCallSchema:
         is_archived=call_data.is_archived,
         notes=call_data.notes,
     )
-    return self.add_call(new_call)
+    return add_call(db, new_call)
 
 
 def get_all_calls() -> list[GetCallSchema]:
