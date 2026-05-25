@@ -18,10 +18,6 @@ class GetNoteSchema(NoteSchema):
     call_id: int = Field(examples=[1])
 
 
-class CreateNoteSchema(GetNoteSchema):
-    pass
-
-
 class CallSchema(BaseSchema):
     direction: CallDirection = Field(..., examples=["inbound"])
     from_number: str = Field(
@@ -40,7 +36,7 @@ class CallSchema(BaseSchema):
     duration: int = Field(..., examples=[120])
     created_at: datetime = Field(..., examples=["2023-01-01T00:00:00"])
     is_archived: bool = Field(..., examples=[False])
-    notes: List[CreateNoteSchema] | None = Field(
+    notes: List[GetNoteSchema] | None = Field(
         examples=[
             {
                 "id": 1,
@@ -58,7 +54,7 @@ class GetCallSchema(CallSchema):
 
 class UpdateCallSchema(BaseSchema):
     is_archived: bool = Field(..., examples=[False])
-    notes: List[CreateNoteSchema] | None = Field(
+    notes: List[GetNoteSchema] | None = Field(
         examples=[
             {
                 "id": 1,
