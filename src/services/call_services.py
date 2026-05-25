@@ -33,7 +33,8 @@ def create_call(db: Session, call_data: CallSchema) -> GetCallSchema:
     return add_call(db, new_call)
 
 
-def get_all_calls() -> list[GetCallSchema]:
+def get_all_calls(db: Session) -> list[GetCallSchema]:
+    calls = db.query(Call).all()
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
