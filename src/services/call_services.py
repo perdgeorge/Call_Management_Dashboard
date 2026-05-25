@@ -43,10 +43,10 @@ def get_non_archived_calls(db: Session) -> list[GetCallSchema]:
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
-def get_call_by_id(call_id: int) -> GetCallSchema:
-    for call in calls:
-        if call["id"] == call_id:
-            return GetCallSchema.model_validate(call)
+def get_call_by_id(db: Session, call_id: int) -> GetCallSchema:
+    call = db.query(Call).filter(Call.id == call_id).first()
+    if call:
+        return GetCallSchema.model_validate(call)
     raise CallNotFoundError(call_id)
 
 
