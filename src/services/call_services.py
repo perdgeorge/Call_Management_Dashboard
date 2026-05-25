@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
-from src.core.schemas import CallSchema, CreateNoteSchema, GetCallSchema
-from src.data.seed_data import calls
+from src.core.schemas import CallSchema, GetNoteSchema, GetCallSchema
 from src.core.exceptions import (
     CallNotFoundError,
     CallFilterNotFoundError,
@@ -50,7 +49,7 @@ def get_call_by_id(db: Session, call_id: int) -> GetCallSchema:
     raise CallNotFoundError(call_id)
 
 
-def add_note_by_id(call_id: int, note: CreateNoteSchema) -> GetCallSchema:
+def add_note_by_id(call_id: int, note: GetNoteSchema) -> GetCallSchema:
     for call in calls:
         GetCallSchema.model_validate(call)
         if call["id"] == call_id:
@@ -60,7 +59,6 @@ def add_note_by_id(call_id: int, note: CreateNoteSchema) -> GetCallSchema:
             else:
                 call["notes"].append(note)
                 return call
-    raise CallNotFoundError(call_id)
 
 
 def archive_call_by_id(db: Session, call_id: int) -> str:
