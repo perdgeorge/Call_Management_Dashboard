@@ -1,5 +1,9 @@
 # Call Management Dashboard
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
+
 A FastAPI-based backend for managing call records, notes, and archiving status using a PostgreSQL database.
 
 ## Overview
@@ -177,3 +181,18 @@ python -m pytest
 - Request and response validation is handled by Pydantic schemas in `src/core/schemas.py`
 - Database connection is configured in `src/core/database.py`
 - API routes are defined in `main.py`
+
+## Future Improvements
+
+Given more time, the following enhancements would be valuable additions:
+
+- **Authentication & Authorization**: Implement JWT-based authentication with role-based access control (admin, user, read-only)
+- **Call Recording Integration**: Add support for storing and retrieving call recording links/metadata
+- **Advanced Filtering**: Implement date range filtering, full-text search on note content, and pagination
+- **Call Analytics**: Add endpoints to generate call statistics (average duration, call counts by type/direction, trends)
+- **Real-time Updates**: Integrate WebSockets for real-time call updates and notifications
+- **Docker Support**: Add Dockerfile and docker-compose.yml for simplified deployment
+- **CI/CD Pipeline**: Set up GitHub Actions for automated testing and deployment
+- **API Documentation Enhancement**: Add OpenAPI schema examples and request/response validation documentation
+- **Database Migrations**: Implement Alembic for managing schema changes across environments
+- **Performance Optimization**: Add caching layer (Redis) for frequently accessed call data and implement query optimization
