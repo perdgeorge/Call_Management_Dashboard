@@ -36,11 +36,9 @@ class CallSchema(BaseSchema):
     duration: int = Field(..., examples=[120])
     created_at: datetime = Field(..., examples=["2023-01-01T00:00:00"])
     is_archived: bool = Field(..., examples=[False])
-    notes: List[GetNoteSchema] | None = Field(
+    notes: List[NoteSchema] | None = Field(
         examples=[
             {
-                "id": 1,
-                "call_id": 1,
                 "content": "Customer left a message about their invoice",
             }
         ],
@@ -50,15 +48,14 @@ class CallSchema(BaseSchema):
 
 class GetCallSchema(CallSchema):
     id: int = Field(..., examples=[1])
+    notes: List[GetNoteSchema] | None = None
 
 
 class UpdateCallSchema(BaseSchema):
     is_archived: bool = Field(..., examples=[False])
-    notes: List[GetNoteSchema] | None = Field(
+    notes: List[NoteSchema] | None = Field(
         examples=[
             {
-                "id": 1,
-                "call_id": 1,
                 "content": "Customer left a message about their invoice",
             }
         ],
