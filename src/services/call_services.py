@@ -28,7 +28,9 @@ def create_call(db: Session, call_data: CallSchema) -> GetCallSchema:
         duration=call_data.duration,
         created_at=call_data.created_at,
         is_archived=call_data.is_archived,
-        notes=call_data.notes,
+        notes=[Note(content=notes.content) for notes in call_data.notes]
+        if call_data.notes
+        else [],
     )
     return add_call(db, new_call)
 
