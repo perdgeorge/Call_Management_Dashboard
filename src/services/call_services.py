@@ -102,15 +102,14 @@ def archive_all_calls(db: Session) -> str:
 
 def filter_calls(db: Session, call_filter: str) -> list[GetCallSchema]:
     call_filter = call_filter.lower()
-    all_calls = get_all_calls(db)
     if call_filter in call_types:
-        return [call for call in all_calls if call.call_type == call_filter]
+        return db.query(Call).filter(Call.call_type == call_filter).all()
     elif call_filter in call_directions:
-        return [call for call in all_calls if call.direction == call_filter]
+        return db.query(Call).filter(Call.call_direction == call_filter).all()
     elif call_filter == "archived":
-        return [call for call in all_calls if call.is_archived is True]
+        return db.query(Call).filter(Call.is_archived.is_(True).all())
     elif call_filter == "not_archived":
-        return [call for call in all_calls if call.is_archived is False]
+        return db.query(Call).filter(Call.is_archived.is_(False)).all()
     raise CallFilterNotFoundError(call_filter)
 
 
