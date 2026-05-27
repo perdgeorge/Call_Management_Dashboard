@@ -4,7 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 load_dotenv()
-POSTGRES_DATABASE_URL = os.getenv("DATABASE_URL")
+
+if os.getenv("DATABASE_URL"):
+    POSTGRES_DATABASE_URL = os.getenv("DATABASE_URL")
+else:
+    raise ValueError("DATABASE_URL not set")
 
 engine = create_engine(POSTGRES_DATABASE_URL)
 
