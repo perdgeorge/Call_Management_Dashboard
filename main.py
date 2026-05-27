@@ -82,4 +82,4 @@ async def delete(call_id: int, db: Session = Depends(get_db)):
 
 @app.get("/health")
 async def health_check():
-    raise HTTPException(status_code=200, detail="ok")
+    return {"status": "ok"}
