@@ -38,9 +38,11 @@ class CallSchema(BaseSchema):
     is_archived: bool = Field(..., examples=[False])
     notes: List[NoteSchema] | None = Field(
         examples=[
-            {
-                "content": "Customer left a message about their invoice",
-            }
+            [
+                {
+                    "content": "Customer left a message about their invoice",
+                }
+            ]
         ],
         default=None,
     )
