@@ -20,7 +20,12 @@ app = FastAPI()
 register_exception_handlers(app)
 
 
-@app.post("/calls", response_model=GetCallSchema, response_model_exclude_none=True)
+@app.post(
+    "/calls",
+    response_model=GetCallSchema,
+    status_code=201,
+    response_model_exclude_none=True,
+)
 async def create_call_endpoint(call: CallSchema, db: Session = Depends(get_db)):
     return create_call(db, call)
 
