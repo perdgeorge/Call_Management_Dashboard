@@ -34,7 +34,6 @@ class CallSchema(BaseSchema):
     )
     call_type: CallType = Field(..., examples=["answered"])
     duration: int = Field(..., examples=[120])
-    created_at: datetime = Field(..., examples=["2023-01-01T00:00:00"])
     is_archived: bool = Field(..., examples=[False])
     notes: List[NoteSchema] | None = Field(
         examples=[
@@ -50,6 +49,7 @@ class CallSchema(BaseSchema):
 
 class GetCallSchema(CallSchema):
     id: int = Field(..., examples=[1])
+    created_at: datetime = Field(..., examples=["2023-01-01T00:00:00"])
     notes: List[GetNoteSchema] | None = None
 
 
