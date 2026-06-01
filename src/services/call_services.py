@@ -36,12 +36,14 @@ def create_call(db: Session, call_data: CallSchema) -> GetCallSchema:
 
 
 def get_all_calls(db: Session) -> list[GetCallSchema]:
-    calls = db.query(Call).all()
+    calls = db.query(Call).order_by(Call.id.asc()).all()
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
 def get_non_archived_calls(db: Session) -> list[GetCallSchema]:
-    calls = db.query(Call).filter(Call.is_archived.is_(False)).all()
+    calls = (
+        db.query(Call).filter(Call.is_archived.is_(False)).order_by(Call.id.asc()).all()
+    )
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
@@ -103,13 +105,33 @@ def archive_all_calls(db: Session) -> str:
 def filter_calls(db: Session, call_filter: str) -> list[GetCallSchema]:
     call_filter = call_filter.lower()
     if call_filter in call_types:
-        return db.query(Call).filter(Call.call_type == call_filter).all()
+        return (
+            db.query(Call)
+            .filter(Call.call_type == call_filter)
+            .order_by(Call.id.asc())
+            .all()
+        )
     elif call_filter in call_directions:
-        return db.query(Call).filter(Call.call_direction == call_filter).all()
+        return (
+            db.query(Call)
+            .filter(Call.call_direction == call_filter)
+            .order_by(Call.id.asc())
+            .all()
+        )
     elif call_filter == "archived":
-        return db.query(Call).filter(Call.is_archived.is_(True).all())
+        return (
+            db.query(Call)
+            .filter(Call.is_archived.is_(True))
+            .order_by(Call.id.asc())
+            .all()
+        )
     elif call_filter == "not_archived":
-        return db.query(Call).filter(Call.is_archived.is_(False)).all()
+        return (
+            db.query(Call)
+            .filter(Call.is_archived.is_(False))
+            .order_by(Call.id.asc())
+            .all()
+        )
     raise CallFilterNotFoundError(call_filter)
 
 
