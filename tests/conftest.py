@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.engine import Engine
 from main import app as fastapi_app
 from src.core.database import get_db, Base
+from src.models.call import Call
+from tests.factories import make_call_payload
 
 load_dotenv()
 
@@ -55,3 +57,42 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
     with TestClient(fastapi_app) as test_client:
         yield test_client
     fastapi_app.dependency_overrides.clear()
+
+
+@pytest.fixture()
+def call(db_session: Session):
+    payload = make_call_payload()
+    row = Call(
+        direction=payload.direction,
+        from_number=payload.from_number,
+        to_number=payload.to_number,
+        call_type=payload.call_type,
+        duration=payload.duration,
+        is_archived=payload.is_archived,
+    )
+
+    db_session.add(row)
+    db_session.commit()
+    db_session.refresh(row)
+    return row
+
+
+@pytest.fixture()
+def call_factory(db_session: Session):
+
+    def _create(**overrides):
+        payload = make_call_payload()
+        row = Call(
+            direction=payload.direction,
+            from_number=payload.from_number,
+            to_number=payload.to_number,
+            call_type=payload.call_type,
+            duration=payload.duration,
+            is_archived=payload.is_archived,
+        )
+        db_session.add(row)
+        db_session.commit()
+        db_session.refresh(row)
+        return row
+
+    return _create
