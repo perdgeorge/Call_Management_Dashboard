@@ -20,3 +20,14 @@ def test_create_call(client: TestClient):
     assert "created_at" in data
     if payload.notes:
         assert data["notes"] == [note.model_dump(mode="json") for note in payload.notes]
+
+
+@pytest.mark.anyio
+def test_get_all_calls(client: TestClient, call_factory: callable):
+    c1 = call_factory()
+    c2 = call_factory()
+    response = client.get("/calls")
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+    ids = {c["id"] for c in response.json()}
+    assert ids == {c1.id, c2.id}
