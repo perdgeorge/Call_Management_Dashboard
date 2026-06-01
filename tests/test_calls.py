@@ -1,5 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
+
+from src.models.call import Call
 from .factories import make_call_payload
 
 
@@ -31,3 +33,18 @@ def test_get_all_calls(client: TestClient, call_factory: callable):
     assert len(response.json()) == 2
     ids = {c["id"] for c in response.json()}
     assert ids == {c1.id, c2.id}
+
+
+@pytest.mark.anyio
+def test_get_call_by_id(client: TestClient, call: Call):
+    response = client.get(f"/calls/{call.id}")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == call.id
+    assert data["direction"] == call.direction
+    assert data["from_number"] == call.from_number
+    assert data["to_number"] == call.to_number
+    assert data["call_type"] == call.call_type
+    assert data["duration"] == call.duration
+    assert data["is_archived"] == call.is_archived
+    assert "created_at" in data
