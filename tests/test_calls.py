@@ -48,3 +48,9 @@ def test_get_call_by_id(client: TestClient, call: Call):
     assert data["duration"] == call.duration
     assert data["is_archived"] == call.is_archived
     assert "created_at" in data
+
+
+@pytest.mark.anyio
+def test_get_non_existent_call_by_id(client: TestClient):
+    response = client.get(f"/calls/{999}")
+    assert response.status_code == 404
