@@ -137,6 +137,9 @@ def filter_calls(db: Session, call_filter: str) -> list[GetCallSchema]:
 def delete_call_by_id(db: Session, call_id: int) -> str:
     call = db.query(Call).filter(Call.id == call_id).first()
     if call:
+        if call.notes:
+            for note in call.notes:
+                db.delete(note)
         db.delete(call)
         db.commit()
         return f"Call with ID:{call_id} is deleted!"
