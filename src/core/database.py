@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+import pytz
 from sqlalchemy import DateTime, create_engine, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
@@ -22,7 +23,9 @@ class Base(DeclarativeBase):
 
 class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True),
+        default=datetime.now(tz=pytz.timezone("Europe/Athens")),
+        server_default=func.now(),
     )
 
 
