@@ -54,3 +54,12 @@ def test_get_call_by_id(client: TestClient, call: Call):
 def test_get_non_existent_call_by_id(client: TestClient):
     response = client.get(f"/calls/{999}")
     assert response.status_code == 404
+
+
+@pytest.mark.anyio
+def test_archive_call(client: TestClient, call_factory: callable):
+    c1 = call_factory()
+    response = client.patch(f"/calls/{c1.id}/archive")
+    data = response.json()
+    assert response.status_code == 200
+    assert data == f"Call with ID:{c1.id} has been archived!"
