@@ -1,15 +1,17 @@
 from faker import Faker
-from src.core.schemas import CallSchema, NoteSchema
+from src.core.schemas import CallSchema, GetNoteSchema
 from src.core.enums import CallDirection, CallType
 
 fake = Faker()
 
 
-def make_note_payload() -> NoteSchema:
+def make_note_payload() -> GetNoteSchema:
     data = {
+        "id": fake.random_int(min=1, max=100),
         "content": fake.sentence(),
+        "call_id": fake.random_int(min=1, max=100),
     }
-    return NoteSchema(**data)
+    return GetNoteSchema(**data)
 
 
 def make_call_payload() -> CallSchema:
