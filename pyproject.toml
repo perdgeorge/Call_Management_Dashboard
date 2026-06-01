@@ -15,4 +15,5 @@ dependencies = [
 	"pytest>=9.0.3",
 	"httpx2>=0.0.0",
 	"pytz>=2024.1",
+	"faker>=23.0.0",
 ]
