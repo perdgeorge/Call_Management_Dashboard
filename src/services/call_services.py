@@ -26,20 +26,23 @@ def create_call(db: Session, call_data: CallSchema) -> GetCallSchema:
         to_number=call_data.to_number,
         call_type=call_data.call_type,
         duration=call_data.duration,
-        created_at=call_data.created_at,
         is_archived=call_data.is_archived,
-        notes=call_data.notes,
+        notes=[Note(content=notes.content) for notes in call_data.notes]
+        if call_data.notes
+        else [],
     )
     return add_call(db, new_call)
 
 
 def get_all_calls(db: Session) -> list[GetCallSchema]:
-    calls = db.query(Call).all()
+    calls = db.query(Call).order_by(Call.id.asc()).all()
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
 def get_non_archived_calls(db: Session) -> list[GetCallSchema]:
-    calls = db.query(Call).filter(not Call.is_archived).all()
+    calls = (
+        db.query(Call).filter(Call.is_archived.is_(False)).order_by(Call.id.asc()).all()
+    )
     return [GetCallSchema.model_validate(call) for call in calls]
 
 
@@ -100,21 +103,43 @@ def archive_all_calls(db: Session) -> str:
 
 def filter_calls(db: Session, call_filter: str) -> list[GetCallSchema]:
     call_filter = call_filter.lower()
-    all_calls = get_all_calls(db)
     if call_filter in call_types:
-        return [call for call in all_calls if call.call_type == call_filter]
+        return (
+            db.query(Call)
+            .filter(Call.call_type == call_filter)
+            .order_by(Call.id.asc())
+            .all()
+        )
     elif call_filter in call_directions:
-        return [call for call in all_calls if call.direction == call_filter]
+        return (
+            db.query(Call)
+            .filter(Call.call_direction == call_filter)
+            .order_by(Call.id.asc())
+            .all()
+        )
     elif call_filter == "archived":
-        return [call for call in all_calls if call.is_archived is True]
+        return (
+            db.query(Call)
+            .filter(Call.is_archived.is_(True))
+            .order_by(Call.id.asc())
+            .all()
+        )
     elif call_filter == "not_archived":
-        return [call for call in all_calls if call.is_archived is False]
+        return (
+            db.query(Call)
+            .filter(Call.is_archived.is_(False))
+            .order_by(Call.id.asc())
+            .all()
+        )
     raise CallFilterNotFoundError(call_filter)
 
 
 def delete_call_by_id(db: Session, call_id: int) -> str:
     call = db.query(Call).filter(Call.id == call_id).first()
     if call:
+        if call.notes:
+            for note in call.notes:
+                db.delete(note)
         db.delete(call)
         db.commit()
         return f"Call with ID:{call_id} is deleted!"

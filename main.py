@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from src.core.database import get_db
 from src.services.call_services import (
@@ -14,13 +14,18 @@ from src.services.call_services import (
     delete_call_by_id,
 )
 from src.core.exception_handlers import register_exception_handlers
-from src.core.schemas import CallSchema, GetCallSchema, GetNoteSchema
+from src.core.schemas import CallSchema, GetCallSchema, NoteSchema
 
 app = FastAPI()
 register_exception_handlers(app)
 
 
-@app.post("/calls", response_model=GetCallSchema, response_model_exclude_none=True)
+@app.post(
+    "/calls",
+    response_model=GetCallSchema,
+    status_code=201,
+    response_model_exclude_none=True,
+)
 async def create_call_endpoint(call: CallSchema, db: Session = Depends(get_db)):
     return create_call(db, call)
 
@@ -71,7 +76,7 @@ async def unarchive(call_id: int, db: Session = Depends(get_db)):
 
 
 @app.patch("/calls/{call_id}/notes")
-async def add_note(call_id: int, note: GetNoteSchema, db: Session = Depends(get_db)):
+async def add_note(call_id: int, note: NoteSchema, db: Session = Depends(get_db)):
     return add_note_by_id(db, call_id, note)
 
 

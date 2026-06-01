@@ -1,0 +1,71 @@
+import pytest
+from fastapi.testclient import TestClient
+
+from src.models.call import Call
+from .factories import make_call_payload
+
+
+@pytest.mark.anyio
+def test_create_call(client: TestClient):
+    payload = make_call_payload()
+    payload_json = payload.model_dump(mode="json")
+    resp = client.post("/calls", json=payload_json)
+    assert resp.status_code == 201
+    data = resp.json()
+    assert data["direction"] == payload.direction
+    assert data["from_number"] == payload.from_number
+    assert data["to_number"] == payload.to_number
+    assert data["call_type"] == payload.call_type
+    assert data["duration"] == payload.duration
+    assert data["is_archived"] == payload.is_archived
+    assert "id" in data
+    assert "created_at" in data
+    if payload.notes:
+        assert data["notes"] == [note.model_dump(mode="json") for note in payload.notes]
+
+
+@pytest.mark.anyio
+def test_get_all_calls(client: TestClient, call_factory: callable):
+    c1 = call_factory()
+    c2 = call_factory()
+    response = client.get("/calls")
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+    ids = {c["id"] for c in response.json()}
+    assert ids == {c1.id, c2.id}
+
+
+@pytest.mark.anyio
+def test_get_call_by_id(client: TestClient, call: Call):
+    response = client.get(f"/calls/{call.id}")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == call.id
+    assert data["direction"] == call.direction
+    assert data["from_number"] == call.from_number
+    assert data["to_number"] == call.to_number
+    assert data["call_type"] == call.call_type
+    assert data["duration"] == call.duration
+    assert data["is_archived"] == call.is_archived
+    assert "created_at" in data
+
+
+@pytest.mark.anyio
+def test_get_non_existent_call_by_id(client: TestClient):
+    response = client.get(f"/calls/{999}")
+    assert response.status_code == 404
+
+
+@pytest.mark.anyio
+def test_archive_call(client: TestClient, call_factory: callable):
+    c1 = call_factory()
+    response = client.patch(f"/calls/{c1.id}/archive")
+    data = response.json()
+    assert response.status_code == 200
+    assert data == f"Call with ID:{c1.id} has been archived!"
+
+
+@pytest.mark.anyio
+def test_archive_non_existent_call(client: TestClient):
+    response = client.patch(f"/calls/{999}/archive")
+    assert response.status_code == 404

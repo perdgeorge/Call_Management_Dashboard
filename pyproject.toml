@@ -13,4 +13,7 @@ dependencies = [
 	"psycopg2-binary>=2.9.3",
 	"python-dotenv>=1.2.2",
 	"pytest>=9.0.3",
+	"httpx2>=0.0.0",
+	"pytz>=2024.1",
+	"faker>=23.0.0",
 ]
