@@ -7,12 +7,14 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 load_dotenv()
 
-if os.getenv("DATABASE_URL"):
-    POSTGRES_DATABASE_URL = os.getenv("DATABASE_URL")
-else:
+database_url = os.getenv("DATABASE_URL")
+if not database_url:
     raise ValueError("DATABASE_URL not set")
 
-engine = create_engine(POSTGRES_DATABASE_URL)
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(database_url)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
