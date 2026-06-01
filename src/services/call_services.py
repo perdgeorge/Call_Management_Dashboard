@@ -26,7 +26,6 @@ def create_call(db: Session, call_data: CallSchema) -> GetCallSchema:
         to_number=call_data.to_number,
         call_type=call_data.call_type,
         duration=call_data.duration,
-        created_at=call_data.created_at,
         is_archived=call_data.is_archived,
         notes=[Note(content=notes.content) for notes in call_data.notes]
         if call_data.notes
